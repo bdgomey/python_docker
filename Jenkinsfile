@@ -1,5 +1,8 @@
 pipeline {
     agent {label 'docker'} 
+    environment {
+        registryCredential = 'docker'
+    }
     stages {
         stage('Checkout') { 
             steps {
@@ -8,12 +11,20 @@ pipeline {
         }
         stage('Build') { 
             steps {
-                sh "docker build -t bjgomes/python ."
+                script {
+                    dockerImage = docker.build bjgomes/python_docker
+                }
             }
         }
-        stage('Run') { 
+        stage('Deploy') { 
             steps {
-                sh "docker run --rm -d -p 5000:5000 bjgomes/python"
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push("$BUILD_NUMBER")
+                        dockerImage.push("$latest")
+
+                    }
+                }
             }
         }
     }
