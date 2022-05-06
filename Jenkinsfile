@@ -7,22 +7,30 @@ pipeline {
     }
     stages {
         stage('Clone repository') {
-
+            steps {
             checkout scm
+            }
         }
         stage('Build Image') {
-            app = docker.build("bjgomes/jenkins")
+            steps{
+            app = docker.build("bjgomes/jenkins")   
+            }            
         }
         stage('Test Image'){
-            app.inside {
-                echo "Test Passed"
+            steps{
+                app.inside {
+                    echo "Test Passed"
+                }
             }
         }
         stage('Deploy'){
+            steps{
             docker.withRegustry("https://registry.hub.docker.com", registryCredentials) {
                 app.push("${env.BUILD_NUMBER}")
                 app.push("latest")
+                }
             }
+
         }
     }
 }
