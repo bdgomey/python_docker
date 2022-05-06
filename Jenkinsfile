@@ -19,7 +19,8 @@ pipeline {
             steps{
                 script{
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential){
-                        docker.push()
+                        def myImage = docker.build(registry)
+                        myImage.push()
                     }
                 }
             }
