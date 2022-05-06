@@ -12,19 +12,19 @@ pipeline {
             }
         }
         stage('Build Image') {
-            steps{
+            step{
             app = docker.build("bjgomes/jenkins")   
             }            
         }
         stage('Test Image'){
-            steps{
+            step{
                 app.inside {
                     echo "Test Passed"
                 }
             }
         }
         stage('Deploy'){
-            steps{
+            step{
             docker.withRegustry("https://registry.hub.docker.com", registryCredentials) {
                 app.push("${env.BUILD_NUMBER}")
                 app.push("latest")
