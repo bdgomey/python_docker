@@ -1,4 +1,5 @@
-node("agent1"){
+pipeline {
+    agent {docker} 
     stages {
         stage('Checkout') { 
             steps {
