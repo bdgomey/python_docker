@@ -2,7 +2,7 @@ pipeline {
 
     environment {
         registry = "bjgomes/python_docker"
-        registryCredential = 'dockerhub'
+        registryCredential = 'docker'
     }  
     agent {
         label 'docker'
