@@ -1,5 +1,5 @@
 pipeline {
-    agent any 
+    agent {label 'docker'} 
     stages {
         stage('Checkout') { 
             steps {
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Run') { 
             steps {
-                sh "docker run --rm bjgomes/python"
+                sh "docker run --rm -d -p 5000:5000 bjgomes/python"
             }
         }
     }
