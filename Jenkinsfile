@@ -1,14 +1,20 @@
-pipeline {
+pipeline {  
+    
+    environment {
+        registry = "bjgomes/python_docker"
+        registryCredential = 'dockerhub'
+    }  
     agent {
         label 'docker'
-        } 
-    stages {
-
-        stage('SCM Checkout')
-            step {
-                checkout([$class: 'GitSCM', branches: [[name: '*/testing']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/bdgomey/python_docker.git']]])
+    }    
+        stages {
+            stage('Building image') {
+            steps{
+                script {
+                docker.build registry + ":$BUILD_NUMBER"
+                }
             }
-
+        }
     }
 }
 
