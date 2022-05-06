@@ -1,32 +1,30 @@
 pipeline {
-    agent {label 'docker'} 
+    agent {
+        label 'docker'
+        } 
     environment {
         registryCredential = 'docker'
     }
     stages {
-        stage('Checkout') { 
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/testing']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/bdgomey/python_docker.git']]])
-            }
-        }
-        stage('Build') { 
-            steps {
-                script {
-                    dockerImage = docker.build bjgomes/python_docker
-                }
-            }
-        }
-        stage('Deploy') { 
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
-                        dockerImage.push("$BUILD_NUMBER")
-                        dockerImage.push("$latest")
+        stage('Clone repository') {
 
-                    }
-                }
+            checkout scm
+        }
+        stage('Build Image') {
+            app = docker.build("bjgomes/jenkins")
+        }
+        stage('Test Image'){
+            app.inside {
+                echo "Test Passed"
+            }
+        }
+        stage('Deploy'){
+            docker.withRegustry("https://registry.hub.docker.com", registryCredentials) {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
             }
         }
     }
 }
+
 
