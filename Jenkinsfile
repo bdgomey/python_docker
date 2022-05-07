@@ -1,21 +1,50 @@
-pipeline {
-    agent {label 'docker'} 
+pipeline {  
+
+    environment {
+        registry = "bjgomes/python_docker"
+        registryCredential = 'docker'
+    }  
+    agent {
+        label 'docker'
+    }    
     stages {
-        stage('Checkout') { 
+        stage('Build Stage') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/bdgomey/python_docker.git']]])
+                script {
+                    dockerImage = docker.build(registry)
+                }
+            }
+
+        }
+        stage('Deploy Stage') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential){
+                        dockerImage.push()
+                    }
+                }
+            }
+            
+        }
+        stage('Run Image'){
+            steps {
+                script {
+                try {
+                    sh "docker ps -aq | xargs docker stop | xargs docker rm"
+                    }catch (err) {
+                        echo "failed to remove images"
+                    } 
+                }               
+                sh "docker run -d -p 5000:5000 --name python_docker bjgomes/python_docker:latest"                
             }
         }
-        stage('Build') { 
+        stage('Clean Up'){
             steps {
-                sh "docker build -t bjgomes/python ."
-            }
-        }
-        stage('Run') { 
-            steps {
-                sh "docker run --rm -d -p 5000:5000 bjgomes/python"
+                sh "docker image prune -af"
             }
         }
     }
 }
+
+
 
