@@ -1,4 +1,4 @@
-FROM python:3.9.12-buster
+FROM python:alpine3.7
 
 ENV FLASK_APP='app.py'
 ENV FLASK_ENV='development'
@@ -9,5 +9,6 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 
 COPY . /app
-
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+EXPOSE 5000
+ENTRYPOINT ["python"]
+CMD [ "app.py" ]
