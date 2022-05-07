@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Run Image'){
             steps {
-                dockerImage.run([-dp 5000:5000])
+                dockerImage.run(['-dp 5000:5000'])
             }
         }
         stage('Clean Up'){
