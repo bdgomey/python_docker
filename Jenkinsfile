@@ -28,14 +28,13 @@ pipeline {
         }
         stage('Run Image'){
             steps {                
-                sh "docker stop python_docker"
-                sh "docker container prune -f"
+                sh "docker ps -aq | xargs docker stop | xargs docker rm"
                 sh "docker run -d -p 5000:5000 --name python_docker bjgomes/python_docker:latest"                
             }
         }
         stage('Clean Up'){
             steps {
-                sh "docker rmi $registry -f"
+                sh "docker image prune -af"
             }
         }
     }
