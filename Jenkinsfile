@@ -28,7 +28,8 @@ pipeline {
         }
         stage('Run Image'){
             steps {
-                sh "docker run -d -p 5000:5000 bjgomes/python_docker:latest"                
+                sh "docker stop python_docker"
+                sh "docker run -d -p 5000:5000 --name python_docker bjgomes/python_docker:latest"                
             }
         }
         stage('Clean Up'){
