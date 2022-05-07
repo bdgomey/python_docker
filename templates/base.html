@@ -16,13 +16,19 @@
 <body>
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{url_for('index')}}">
                 <img src="static\img\skillstorm.png" alt="" width="180" height="50"
                     class="d-inline-block align-text-top">
             </a>
         </div>
     </nav>
-    <h1>Hello, world!</h1>
+
+    
+    {% block content %}
+
+    {% endblock content %}
+            
+    
 
     <!-- Optional JavaScript; choose one of the two! -->
 
