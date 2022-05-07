@@ -27,8 +27,12 @@ pipeline {
             
         }
         stage('Run Image'){
-            steps {                
-                sh "docker ps -aq | xargs docker stop | xargs docker rm"
+            steps {
+                try {
+                    sh "docker ps -aq | xargs docker stop | xargs docker rm"
+                }catch (err) {
+                    echo "failed to remove images"
+                }                
                 sh "docker run -d -p 5000:5000 --name python_docker bjgomes/python_docker:latest"                
             }
         }
