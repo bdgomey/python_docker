@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Run Image'){
             steps {
-                sh "docker run -d -p 5000:5000" registry':latest'                
+                sh "docker run -d -p 5000:5000 bjgomes/python_docker:latest"                
             }
         }
         stage('Clean Up'){
