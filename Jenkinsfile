@@ -28,10 +28,7 @@ pipeline {
         }
         stage('Run Image'){
             steps {
-                script{
-                    dockerImage.run(['-dp 5000:5000'])
-                }
-                
+                sh "docker run -d -p 5000:5000:latest "                
             }
         }
         stage('Clean Up'){
