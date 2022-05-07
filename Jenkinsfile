@@ -8,14 +8,7 @@ pipeline {
         label 'docker'
     }    
     stages {
-        stage('Building image') {
-            steps{
-                script {
-                docker.build registry + ":$BUILD_NUMBER"
-                }
-            }
-        }
-        stage('Deploy') {
+        stage('Build and Push Image') {
             steps{
                 script{
                     docker.withRegistry('https://registry.hub.docker.com', registryCredential){
