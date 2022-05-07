@@ -9,20 +9,29 @@ pipeline {
     }    
     stages {
         stage('Build Stage') {
-            script {
-                dockerImage = docker.build registry + ":$BUILD_NUMBER"
-            }
-        }
-        stage('Deploy Stage') {
-            script {
-                docker.withRegistry('', registryCredential){
-                    dockerImage.push(registry)
+            steps {
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
+
+        }
+        stage('Deploy Stage') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential){
+                        dockerImage.push(registry)
+                    }
+                }
+            }
+            
         }
         stage('Run Image'){
             steps {
-                dockerImage.run(['-dp 5000:5000'])
+                script{
+                    dockerImage.run(['-dp 5000:5000'])
+                }
+                
             }
         }
         stage('Clean Up'){
