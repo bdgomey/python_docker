@@ -3,6 +3,8 @@ pipeline {
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
+        kubeConfig = 'kubeconfig'
+
     }  
     agent {
         label 'docker'
@@ -26,17 +28,12 @@ pipeline {
             }
             
         }
-        stage('Run Image'){
+        stage('deploy to kubernetes'){
             steps {
-                script {
-                try {
-                    sh "docker ps -aq | xargs docker stop | xargs docker rm"
-                    }catch (err) {
-                        echo "failed to remove images"
-                    } 
-                }               
-                sh "docker run -d -p 5000:5000 --name python_docker bjgomes/python_docker:latest"                
-            }
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeConfig')]) {
+                    sh "kubectl apply -f deployment.yaml"
+                    sh "kubectl rollout restart deployment flaskcontainer"
+}
         }
         stage('Clean Up'){
             steps {
