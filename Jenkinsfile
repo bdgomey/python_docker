@@ -36,16 +36,6 @@ pipeline {
                     }
                 } 
             }            
-        stage('Deploy to Kubernetes'){
-            steps {
-                script {
-                    withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
-                        sh 'kubectl apply -f deployment.yml'
-                        sh 'kubectl rollout restart deployment ${deployment_name}'
-                    }
-                }
-            }
-        }
         stage('Clean Up'){
             steps {
                 sh "docker image prune -af"
