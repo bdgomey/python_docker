@@ -36,8 +36,7 @@ pipeline {
                     sh 'kubectl rollout restart deployment maven-app-deploy'
                 }
             }
-        }
-    }            
+        }            
         stage('Clean Up'){
             steps {
                 sh "docker image prune -af"
