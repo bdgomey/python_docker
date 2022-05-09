@@ -3,9 +3,9 @@ pipeline {
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
-        AWS = 'AWS_Jenkins_credentials'
         deployment_name = 'flaskcontainer'
         cluster_name = 'skillstorm-eks'
+        
 
     }  
     agent {
@@ -32,8 +32,7 @@ pipeline {
         stage('AWS KubeConfig'){
             steps {
                 script {
-                    withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
-                        sh 'aws eks update-kubeconfig --region us-east-1 --name ${cluster_name}'
+                    kubernetesDeploy(configs: "deployment.yaml", kubeconfigId: "K8s")
                     }
                 } 
             }            
