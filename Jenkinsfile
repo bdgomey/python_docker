@@ -30,10 +30,11 @@ pipeline {
         }
         stage('deploy to kubernetes'){
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeConfig')]) {
-                    sh "kubectl apply -f deployment.yaml"
-                    sh "kubectl rollout restart deployment flaskcontainer"
-                }
+                kubernetesDeploy(
+                    configs: 'deployment.yaml'
+                    kubeconfigId: 'kubeconfig'
+                    enableConfigSubstitution: true
+                )
             }
         }
         stage('Clean Up'){
