@@ -29,13 +29,15 @@ pipeline {
             }
             
         }
-        stage('AWS KubeConfig'){
+        stage ('K8S Deploy') {
             steps {
-                script {
-                    kubernetesDeploy(configs: "deployment.yaml", kubeconfigId: "K8s")
-                    }
-                } 
-            }            
+                withKubeConfig([credentialsId: 'K8s']) {
+                    sh 'kubectl apply -f deployment.yaml'
+                    sh 'kubectl rollout restart deployment maven-app-deploy'
+                }
+            }
+        }
+    }            
         stage('Clean Up'){
             steps {
                 sh "docker image prune -af"
