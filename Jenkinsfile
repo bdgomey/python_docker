@@ -3,7 +3,6 @@ pipeline {
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
-        kubeConfig = 'K8s'
 
     }  
     agent {
