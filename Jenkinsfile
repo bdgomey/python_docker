@@ -31,7 +31,7 @@ pipeline {
         stage('deploy to kubernetes'){
             steps {
                 script {
-                    withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]){
+                    withCredentials([aws(accessKeyVariable:'AWS_ACCESS_KEY_ID'. credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
                         sh 'kubectl apply -f deployment.yaml'
                         sh 'kubectl rollout restart deployment flaskcontainer'
                     }
