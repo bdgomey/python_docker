@@ -30,12 +30,9 @@ pipeline {
             steps {
                 script {
                     kubernetesDeploy configs: 'deployment.yaml', 
-                    kubeconfigId: 'K8s-config',
-                }
- 
-            }
-
-            
+                    kubeconfigId: 'K8s-config'
+                } 
+            }            
         }
         stage('Clean Up'){
             steps {
