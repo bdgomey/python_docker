@@ -34,11 +34,8 @@ pipeline {
         }
         stage('deploy to kubernetes'){
             steps {
-                kubernetesDeploy(
-                    configs: 'deployment.yaml'
-                    kubeconfigId: 'kubeconfig'
-                    enableConfigSubstitution: true
-                )
+                sh "kubectl apply -f deployment.yaml"
+                sh "kubectl rollout restart deployment flaskcontainer"
             }
         }
         stage('Clean Up'){
