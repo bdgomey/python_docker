@@ -33,7 +33,8 @@ pipeline {
                 withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeConfig')]) {
                     sh "kubectl apply -f deployment.yaml"
                     sh "kubectl rollout restart deployment flaskcontainer"
-}
+                }
+            }
         }
         stage('Clean Up'){
             steps {
