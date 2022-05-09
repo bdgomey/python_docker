@@ -10,11 +10,6 @@ pipeline {
         label 'docker'
     }    
     stages {
-        stage('Initializing Credentials') {
-            steps {
-                bat "powershell Copy-Item ${kubeConfig} -Destination home/ubuntu/.kube"
-            }
-        }
         stage('Build Stage') {
             steps {
                 script {
@@ -34,9 +29,13 @@ pipeline {
         }
         stage('deploy to kubernetes'){
             steps {
-                sh "kubectl apply -f deployment.yaml"
-                sh "kubectl rollout restart deployment flaskcontainer"
+             kubernetesDeploy configs: 'deployment.yaml', 
+             kubeconfigId: 'K8s-config', 
+
+       
             }
+
+            
         }
         stage('Clean Up'){
             steps {
