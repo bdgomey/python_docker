@@ -3,6 +3,7 @@ pipeline {
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
+        KUBECONFIG = "K8s"
 
     }  
     agent {
@@ -29,10 +30,13 @@ pipeline {
         stage('deploy to kubernetes'){
             steps {
                 script {
-                    kubernetesDeploy (
-                    configs: 'deployment.yaml', 
-                    kubeconfigId: 'K8s-config'
-                    )
+                    withKubeConfig([
+                        credentialsId: 'K8s',
+                        namespace: 'default'
+                    ]) {
+                        sh 'kubectl apply -f deployment.yaml'
+                        sh 'kubectl rollout restart deployment flaskcontainer'
+                    }
                 } 
             }            
         }
