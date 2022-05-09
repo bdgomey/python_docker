@@ -5,7 +5,7 @@ pipeline {
         registryCredential = 'docker'
         deployment_name = 'flaskcontainer'
         cluster_name = 'skillstorm-eks'
-        
+        AWS=credentials('AWS_Jenkins_credentials')
 
     }  
     agent {
