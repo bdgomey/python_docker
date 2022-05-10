@@ -1,4 +1,4 @@
-pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
+pipeline {  //sonarqube auth token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
 
     environment {
         registry = "bjgomes/python_docker"
