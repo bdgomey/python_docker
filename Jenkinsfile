@@ -38,7 +38,7 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
             }
             
         }
-        stage ('Check sts identity') {
+        stage ('Check AWS STS identity') {
             steps {
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
                     sh "aws sts get-caller-identity"
