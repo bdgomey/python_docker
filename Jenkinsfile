@@ -27,9 +27,11 @@ pipeline {
         }
         stage ('K8S Deploy') {
             steps {
-                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')])
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
+                    sh "aws sts get-caller-identity"
                 }
-            }            
+            }
+        }            
         stage('Clean Up'){
             steps {
                 sh "docker image prune -af"
