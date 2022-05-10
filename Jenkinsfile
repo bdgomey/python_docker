@@ -3,10 +3,6 @@ pipeline {
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
-        deployment_name = 'flaskcontainer'
-        cluster_name = 'skillstorm-eks'
-        AWS=credentials('AWS_Jenkins_credentials')
-
     }  
     agent {
         label 'docker'
@@ -31,9 +27,7 @@ pipeline {
         }
         stage ('K8S Deploy') {
             steps {
-                withKubeConfig([credentialsId: 'K8s']) {
-                    sh 'kubectl apply -f deployment.yaml'
-                    sh 'kubectl rollout restart deployment maven-app-deploy'
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')])
                 }
             }
         }            
