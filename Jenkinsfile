@@ -25,10 +25,18 @@ pipeline {
             }
             
         }
-        stage ('K8S Deploy') {
+        stage ('Check sts identity') {
             steps {
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
                     sh "aws sts get-caller-identity"
+                }
+            }
+        }
+        stage ('Deploy to Kubernetes') {
+            steps {
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
+                    sh "kubectl apply -f deployment.yaml"
+                    sh "kubectl rollout restart deployment flaskcontainer"
                 }
             }
         }            
