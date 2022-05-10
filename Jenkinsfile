@@ -11,9 +11,11 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
  
     stages {
         stage('SonarQube analysis') {
+            steps {
             def scannerHome = tool 'SonarQube';
-            withSonarQubeEnv('SonarQubeScanner') { // If you have configured more than one global server connection, you can specify its name
-            sh "${scannerHome}/bin/sonar-scanner"
+            withSonarQubeEnv('SonarQubeScanner') {
+                sh "${scannerHome}/bin/sonar-scanner"
+                }
             }
         }   
         stage('Build Stage') {
