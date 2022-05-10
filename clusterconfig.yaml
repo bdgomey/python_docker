@@ -1,0 +1,15 @@
+apiVersion: eksctl.io/v1alpha5 #https://eksctl.io/usage/schema/
+kind: ClusterConfig
+
+metadata:
+  name: skillstorm
+  region: us-east-1
+  availabilityZones: 
+
+nodeGroups:
+  - name: ng-1
+    instanceType: t3.medium
+    desiredCapacity: 2
+    volumeSize: 80
+    ssh:
+      allow: true # will use ~/.ssh/id_rsa.pub as the default ssh key

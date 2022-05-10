@@ -1,13 +1,21 @@
-pipeline {  
+pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
 
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
+        cluster_name = 'skillstorm'
     }  
     agent {
         label 'docker'
-    }    
+    }
+ 
     stages {
+        stage('SonarQube analysis') {
+            def scannerHome = tool 'SonarQube';
+            withSonarQubeEnv('SonarQubeScanner') { // If you have configured more than one global server connection, you can specify its name
+            sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }   
         stage('Build Stage') {
             steps {
                 script {
@@ -35,7 +43,7 @@ pipeline {
         stage ('Deploy to Kubernetes') {
             steps {
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
-                    sh "aws eks update-kubeconfig --region us-east-1 --name skillstorm-v2"
+                    sh "aws eks update-kubeconfig --region us-east-1 --name ${cluster_name}"
                     sh "kubectl apply -f deployment.yaml"
                     sh "kubectl rollout restart deployment flaskcontainer"
                 }
