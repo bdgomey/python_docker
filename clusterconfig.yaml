@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5 #https://eksctl.io/usage/schema/
 kind: ClusterConfig
 
 metadata:
-  name: skillstorm
+  name: jenkins
   region: us-east-1
   
 nodeGroups:
