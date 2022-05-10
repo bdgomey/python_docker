@@ -14,7 +14,6 @@ pipeline {
                     dockerImage = docker.build(registry)
                 }
             }
-
         }
         stage('Deploy Stage') {
             steps {
@@ -26,18 +25,22 @@ pipeline {
             }
             
         }
-        stage('Run Image'){
+        stage ('Check sts identity') {
             steps {
-                script {
-                try {
-                    sh "docker ps -aq | xargs docker stop | xargs docker rm"
-                    }catch (err) {
-                        echo "failed to remove images"
-                    } 
-                }               
-                sh "docker run -d -p 5000:5000 --name python_docker bjgomes/python_docker:latest"                
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
+                    sh "aws sts get-caller-identity"
+                }
             }
         }
+        stage ('Deploy to Kubernetes') {
+            steps {
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
+                    sh "aws eks update-kubeconfig --region us-east-1 --name skillstorm-v2"
+                    sh "kubectl apply -f deployment.yaml"
+                    sh "kubectl rollout restart deployment flaskcontainer"
+                }
+            }
+        }            
         stage('Clean Up'){
             steps {
                 sh "docker image prune -af"
@@ -45,6 +48,7 @@ pipeline {
         }
     }
 }
+
 
 
 
