@@ -3,7 +3,7 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
-        cluster_name = 'jenkins'
+        cluster_name = 'skillstorm'
     }  
     agent {
         label 'docker'
@@ -21,6 +21,18 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
                 }
             }
         }
+        stage('Quality Gates') {
+            steps {
+                script{
+                    timeout(time: 1, unit: 'HOURS') {
+                    def qg = waitForQualityGate()
+                    if(qg.status != 'OK') {
+                        error "pipeline aborted due to quality gate failure ${qg.status}"
+                        }
+                    }
+                }
+            }
+        }   
         stage('Build Stage') {
             steps {
                 script {
@@ -38,7 +50,7 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
             }
             
         }
-        stage ('Check AWS STS identity') {
+        stage ('Check sts identity') {
             steps {
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AWS_Jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]){
                     sh "aws sts get-caller-identity"
