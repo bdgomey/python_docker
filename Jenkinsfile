@@ -21,18 +21,14 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
                 }
             }
         }
-        stage('Quality Gates') {
+        stage("Quality Gate") {
             steps {
-                script{
-                    timeout(time: 1, unit: 'HOURS') {
-                    def qg = waitForQualityGate()
-                    if(qg.status != 'OK') {
-                        error "pipeline aborted due to quality gate failure ${qg.status}"
-                        }
-                    }
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
-        }   
+
+        }        
         stage('Build Stage') {
             steps {
                 script {
