@@ -15,7 +15,19 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
                     scannerHome = tool 'SonarQube'
                 }
                 withSonarQubeEnv('SonarQubeScanner') {                
-                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=python -Dsonar.sources=."
+                    sh "${scannerHome}/bin/sonar-scanner \
+                    -Dsonar.projectKey=python \
+                    -Dsonar.sources=."
+                }
+            }
+        }
+        stage('Quality Gates') {
+            step {
+                timeout(time: 1, unit: 'HOURS') {
+                    def qg = waitForQualityGate()
+                    if(qg.status != 'OK') {
+                        error "pipeline aborted due to quality gate failure ${qg.status}"
+                    }
                 }
             }
         }   
