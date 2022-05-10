@@ -9,7 +9,7 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
         label 'docker'
     }
     stages {
-        stage('SonarQube analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     scannerHome = tool 'SonarQube'
