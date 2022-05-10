@@ -8,13 +8,14 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
     agent {
         label 'docker'
     }
- 
     stages {
         stage('SonarQube analysis') {
             steps {
-            def scannerHome = tool 'SonarQube';
-            withSonarQubeEnv('SonarQubeScanner') {
-                sh "${scannerHome}/bin/sonar-scanner"
+                script {
+                    scannerHome = tool 'SonarQube'
+                }
+                withSonarQubeEnv('SonarQubeScanner') {                
+                    sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=python -Dsonar.sources=. -Dsonar.login=6cf1e2c19094f3e61f73b7c500100bd4375fce4f"
                 }
             }
         }   
