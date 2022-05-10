@@ -22,7 +22,7 @@ pipeline {  //sonarqube token 6cf1e2c19094f3e61f73b7c500100bd4375fce4f
             }
         }
         stage('Quality Gates') {
-            step {
+            steps {
                 timeout(time: 1, unit: 'HOURS') {
                     def qg = waitForQualityGate()
                     if(qg.status != 'OK') {
