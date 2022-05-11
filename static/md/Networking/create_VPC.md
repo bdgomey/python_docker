@@ -6,15 +6,15 @@
 >
 >Select VPC from the search bar after you log in. 
 >
->![VPC Navigation](images/vpc_search.png)
+>![VPC Navigation](vpc_search.png)
 >
 >You should be taken to the VPC dashboard pictured below
->![EC2 Dash board](images/vpc_dashboard.png)
+>![EC2 Dash board](vpc_dashboard.png)
 >><p>***From here you have 2 options to create a VPC.  You can select VPCs in the dashboard or you can launch the VPC Wizard at the top.  For this lab we will be using the wizard.***</p>
 >
 ><p>Select Launch Wizard and you will be taken to the screen below:</p>
 >
->![VPC_Wizard](images/VPC_Wizard/VPC_Wizard.gif)
+>![VPC_Wizard](VPC_Wizard/VPC_Wizard.gif)
 >From here we make our VPC selections
 >
 >**Step 1:** Select VPC, subnets, etc.
@@ -32,7 +32,7 @@
 >**Step 7:** create VPC
 >
 >***You should see something like the below image after you create your VPC***
->![created VPC](images/vpc_created.png)
+>![created VPC](vpc_created.png)
 >Select **View VPC** on the bottom of the above page
 >
 >Finally select subnets on the left hand side and find your public subnets
@@ -40,7 +40,7 @@
 >click the checkbox next to one of your public subnets and select actions at the top right then select edit subnet settings
 >
 >You will enable public IPv4 address here by checking the box next to "Enable auto-assign public IPv4 address" and save your settings
->![enable_pub_ip](images/enable_pub_ip.png)
+>![enable_pub_ip](enable_pub_ip.png)
 ---
 # You now have a custom VPC that allows public internet traffic.
 ---

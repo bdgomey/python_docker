@@ -14,6 +14,10 @@ def ec2_ssh_lab():
 def iam_user_lab():
     return render_template('iam_user_lab.html')
 
+@app.route('/create_vpc')
+def create_vpc():
+    return render_template('create_vpc.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
     
