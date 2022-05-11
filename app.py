@@ -18,6 +18,10 @@ def iam_user_lab():
 def create_vpc():
     return render_template('create_vpc.html')
 
+@app.route('/traffic_security')
+def traffic_security():
+    return render_template('traffic_security.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
     
