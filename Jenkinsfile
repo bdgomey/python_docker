@@ -23,13 +23,8 @@ pipeline {  //sonarqube authentication token 6cf1e2c19094f3e61f73b7c500100bd4375
         }
         stage('Quality Gates') {
             steps {
-                script{
-                    timeout(time: 5, unit: 'MINUTES') {
-                    def qg = waitForQualityGate()
-                    if(qg.status != 'OK') {
-                        error "pipeline aborted due to quality gate failure ${qg.status}"
-                        }
-                    }
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }   
