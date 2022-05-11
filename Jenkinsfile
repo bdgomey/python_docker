@@ -3,7 +3,7 @@ pipeline {  //sonarqube authentication token 6cf1e2c19094f3e61f73b7c500100bd4375
     environment {
         registry = "bjgomes/python_docker"
         registryCredential = 'docker'
-        cluster_name = 'jenkins'
+        cluster_name = 'skillstorm'
     }  
     agent {
         label 'docker'

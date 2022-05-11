@@ -1,15 +1,18 @@
-apiVersion: eksctl.io/v1alpha5 #https://eksctl.io/usage/schema/
+apiVersion: eksctl.io/v1alpha5 #https://eksctl.io/usage/schema/ 
+
 kind: ClusterConfig
 
 metadata:
-  name: jenkins
+  name: skillstorm
   region: us-east-1
   
 nodeGroups:
   - name: ng-1
     instanceType: t3.medium
     desiredCapacity: 1
-    volumeSize: 80
+    volumeSize: 10
     ssh:
       allow: true
 availabilityZones: ['us-east-1a', 'us-east-1b', 'us-east-1c']
+
+#aws eks update-kubeconfig --region us-east-1 --name skillstorm ### update kubeconfig
