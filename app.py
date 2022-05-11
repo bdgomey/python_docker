@@ -22,6 +22,10 @@ def create_vpc():
 def traffic_security():
     return render_template('traffic_security.html')
 
+@app.route('/s3_demo')
+def s3_demo():
+    return render_template('s3_demo.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
     
