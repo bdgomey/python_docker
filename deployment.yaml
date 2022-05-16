@@ -35,6 +35,13 @@ spec:
           name:  flaskcontainer
         imagePullPolicy: Always
       restartPolicy: Always
+    volumeMounts:
+    - name: persistent-storage
+      mountPath: /data
+  volumes:
+  - name: persistent-storage
+    persistentVolumeClaim:
+      claimName: ebs-claim
 
 ---
 apiVersion: v1
