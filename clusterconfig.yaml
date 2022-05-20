@@ -6,13 +6,13 @@ metadata:
   name: skillstorm
   region: us-east-1
   
-nodeGroups:
+managedNodeGroups:
   - name: ng-1
     instanceType: t3.medium
-    desiredCapacity: 1
-    volumeSize: 10
+    desiredCapacity: 2
+    volumeSize: 20
     ssh:
       allow: true
 availabilityZones: ['us-east-1a', 'us-east-1b', 'us-east-1c']
 
-#aws eks update-kubeconfig --region us-east-1 --name skillstorm ### update kubeconfig
+#aws eks update-kubeconfig --region us-east-1 --name bgomes ### update kubeconfig
